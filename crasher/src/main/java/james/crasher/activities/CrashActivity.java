@@ -3,6 +3,7 @@ package james.crasher.activities;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -64,6 +65,10 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         toolbar.setBackgroundColor(color);
         toolbar.setTitleTextColor(isColorDark ? Color.WHITE : Color.BLACK);
 
+        copy.setBackgroundColor(colorDark);
+        copy.setTextColor(colorDark);
+        copy.setOnClickListener(this);
+
         share.setBackgroundColor(colorDark);
         share.setTextColor(colorDark);
         share.setOnClickListener(this);
@@ -109,10 +114,15 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             else if (service instanceof android.text.ClipboardManager)
                 ((android.text.ClipboardManager) service).setText(stackTrace.getText().toString());
         } else if (v.getId() == R.id.share) {
-
-        } else if (v.getId() == R.id.email) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
+
+            startActivity(Intent.createChooser(intent, getString(R.string.action_share)));
+        } else if (v.getId() == R.id.email) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setType("text/plain");
+            intent.setData(Uri.parse("mailto:" + getIntent().getStringExtra(EXTRA_EMAIL)));
             intent.putExtra(Intent.EXTRA_EMAIL, getIntent().getStringExtra(EXTRA_EMAIL));
             intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_email), name.getText().toString(), getString(R.string.app_name)));
             intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
