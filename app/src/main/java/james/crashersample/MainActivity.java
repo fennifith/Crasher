@@ -3,13 +3,14 @@ package james.crashersample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import james.crasher.Crasher;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Crasher.OnCrashListener {
 
     private Crasher crasher;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         crasher = new Crasher(this);
+        crasher.addListener(this);
         crasher.setEmail("18jafenn90@gmail.com");
 
         stackOverflowSwitch = (SwitchCompat) findViewById(R.id.stackOverflow);
@@ -46,5 +48,10 @@ public class MainActivity extends AppCompatActivity {
                 crasher.setCrashActivityEnabled(isChecked);
             }
         });
+    }
+
+    @Override
+    public void onCrash(Thread thread, Throwable throwable) {
+        Log.d("MainActivity", "Exception thrown: " + throwable.getClass().getName());
     }
 }

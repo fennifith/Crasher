@@ -9,12 +9,15 @@ import android.util.Log;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import james.crasher.activities.CrashActivity;
 
 public class Crasher implements Thread.UncaughtExceptionHandler {
 
     private Context context;
+    private List<OnCrashListener> listeners;
 
     private boolean isStackOverflow;
     private boolean isForceStackOverflow;
@@ -25,7 +28,16 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
 
     public Crasher(Context context) {
         this.context = context.getApplicationContext();
+        listeners = new ArrayList<>();
         Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+
+    public void addListener(OnCrashListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(OnCrashListener listener) {
+        listeners.remove(listener);
     }
 
     public void setStackoverflowEnabled(boolean isEnabled) {
@@ -73,6 +85,7 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, final Throwable e) {
+
         if ((BuildConfig.DEBUG && isStackOverflow) || isForceStackOverflow) {
             e.printStackTrace();
             Log.d("Crasher", "Exception thrown: " + e.getClass().getName() + ". Opening StackOverflow query for \"" + e.getMessage() + "\".");
@@ -99,6 +112,14 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
             context.startActivity(intent);
         } else e.printStackTrace();
 
+        for (OnCrashListener listener : listeners) {
+            listener.onCrash(t, e);
+        }
+
         System.exit(1);
+    }
+
+    public interface OnCrashListener {
+        void onCrash(Thread thread, Throwable throwable);
     }
 }
