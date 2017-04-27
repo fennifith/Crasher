@@ -1,5 +1,6 @@
 package james.crasher.activities;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -21,7 +21,7 @@ import james.crasher.R;
 import james.crasher.utils.ColorUtils;
 import james.crasher.utils.ImageUtils;
 
-public class CrashActivity extends AppCompatActivity {
+public class CrashActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String EXTRA_NAME = "james.crasher.EXTRA_NAME";
     public static final String EXTRA_MESSAGE = "james.crasher.EXTRA_MESSAGE";
@@ -34,9 +34,11 @@ public class CrashActivity extends AppCompatActivity {
     private ActionBar actionBar;
     private TextView name;
     private TextView message;
-    private TextView textView;
-    private Button email;
+    private TextView description;
+    private TextView stackTrace;
+    private Button copy;
     private Button share;
+    private Button email;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,9 +48,11 @@ public class CrashActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         name = (TextView) findViewById(R.id.name);
         message = (TextView) findViewById(R.id.message);
-        email = (Button) findViewById(R.id.email);
+        description = (TextView) findViewById(R.id.description);
+        copy = (Button) findViewById(R.id.copy);
         share = (Button) findViewById(R.id.share);
-        textView = (TextView) findViewById(R.id.stackTrace);
+        email = (Button) findViewById(R.id.email);
+        stackTrace = (TextView) findViewById(R.id.stackTrace);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -62,9 +66,13 @@ public class CrashActivity extends AppCompatActivity {
 
         share.setBackgroundColor(colorDark);
         share.setTextColor(colorDark);
+        share.setOnClickListener(this);
 
         email.setBackgroundColor(colorDark);
         email.setTextColor(colorDark);
+        if (getIntent().hasExtra(EXTRA_EMAIL)) {
+            email.setOnClickListener(this);
+        } else email.setVisibility(View.GONE);
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -79,17 +87,8 @@ public class CrashActivity extends AppCompatActivity {
 
         name.setText(getIntent().getStringExtra(EXTRA_NAME));
         message.setText(getIntent().getStringExtra(EXTRA_MESSAGE));
-        textView.setText(getIntent().getStringExtra(EXTRA_STACK_TRACE));
-
-        if (getIntent().hasExtra(EXTRA_EMAIL)) {
-            email.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO: send email
-                    Toast.makeText(v.getContext(), getIntent().getStringExtra(EXTRA_EMAIL), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else email.setVisibility(View.GONE);
+        description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crashed), getString(R.string.app_name)));
+        stackTrace.setText(getIntent().getStringExtra(EXTRA_STACK_TRACE));
     }
 
     @Override
@@ -99,5 +98,26 @@ public class CrashActivity extends AppCompatActivity {
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.copy) {
+            Object service = getSystemService(CLIPBOARD_SERVICE);
+            if (service instanceof android.content.ClipboardManager)
+                ((android.content.ClipboardManager) service).setPrimaryClip(ClipData.newPlainText(name.getText().toString(), stackTrace.getText().toString()));
+            else if (service instanceof android.text.ClipboardManager)
+                ((android.text.ClipboardManager) service).setText(stackTrace.getText().toString());
+        } else if (v.getId() == R.id.share) {
+
+        } else if (v.getId() == R.id.email) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_EMAIL, getIntent().getStringExtra(EXTRA_EMAIL));
+            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_email), name.getText().toString(), getString(R.string.app_name)));
+            intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
+
+            startActivity(Intent.createChooser(intent, getString(R.string.action_send_email)));
+        }
     }
 }

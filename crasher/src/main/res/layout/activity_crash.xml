@@ -49,17 +49,34 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"/>
 
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/msg_crashed"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="14sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <james.buttons.Button
+                    android:id="@+id/copy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/action_copy"
+                    app:backgroundType="outline"
+                    app:ripplesEnabled="false" />
+
+                <james.buttons.Button
                     android:id="@+id/share"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Share"
+                    android:text="@string/action_share"
                     app:backgroundType="outline"
                     app:ripplesEnabled="false" />
 
@@ -68,7 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Email"
+                    android:text="@string/action_email"
                     app:backgroundType="outline"
                     app:ripplesEnabled="false" />
 
