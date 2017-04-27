@@ -11,5 +11,6 @@
     <string name="action_share">Share</string>
     <string name="action_email">Email</string>
     <string name="action_send_email">Send Email</string>
+    <string name="title_stack_trace">Stack Trace</string>
 
 </resources>

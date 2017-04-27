@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -36,10 +37,12 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
     private TextView name;
     private TextView message;
     private TextView description;
-    private TextView stackTrace;
     private Button copy;
     private Button share;
     private Button email;
+    private View stackTraceHeader;
+    private ImageView stackTraceArrow;
+    private TextView stackTrace;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +56,8 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         copy = (Button) findViewById(R.id.copy);
         share = (Button) findViewById(R.id.share);
         email = (Button) findViewById(R.id.email);
+        stackTraceHeader = findViewById(R.id.stackTraceHeader);
+        stackTraceArrow = (ImageView) findViewById(R.id.stackTraceArrow);
         stackTrace = (TextView) findViewById(R.id.stackTrace);
 
         setSupportActionBar(toolbar);
@@ -93,7 +98,9 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         name.setText(getIntent().getStringExtra(EXTRA_NAME));
         message.setText(getIntent().getStringExtra(EXTRA_MESSAGE));
         description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crashed), getString(R.string.app_name)));
+
         stackTrace.setText(getIntent().getStringExtra(EXTRA_STACK_TRACE));
+        stackTraceHeader.setOnClickListener(this);
     }
 
     @Override
@@ -128,6 +135,14 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
 
             startActivity(Intent.createChooser(intent, getString(R.string.action_send_email)));
+        } else if (v.getId() == R.id.stackTraceHeader) {
+            if (stackTrace.getVisibility() == View.GONE) {
+                stackTrace.setVisibility(View.VISIBLE);
+                stackTraceArrow.animate().rotation(180).start();
+            } else {
+                stackTrace.setVisibility(View.GONE);
+                stackTraceArrow.animate().rotation(0).start();
+            }
         }
     }
 }
