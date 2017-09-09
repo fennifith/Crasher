@@ -85,7 +85,6 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, final Throwable e) {
-
         if ((BuildConfig.DEBUG && isStackOverflow) || isForceStackOverflow) {
             e.printStackTrace();
             Log.d("Crasher", "Exception thrown: " + e.getClass().getName() + ". Opening StackOverflow query for \"" + e.getMessage() + "\".");
