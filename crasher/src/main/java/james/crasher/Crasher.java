@@ -32,40 +32,46 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    public void addListener(OnCrashListener listener) {
+    public Crasher addListener(OnCrashListener listener) {
         listeners.add(listener);
+        return this;
     }
 
-    public void removeListener(OnCrashListener listener) {
+    public Crasher removeListener(OnCrashListener listener) {
         listeners.remove(listener);
+        return this;
     }
 
-    public void setStackoverflowEnabled(boolean isEnabled) {
+    public Crasher setStackoverflowEnabled(boolean isEnabled) {
         isStackOverflow = isEnabled;
+        return this;
     }
 
     public boolean isStackoverflowEnabled() {
         return BuildConfig.DEBUG && isStackOverflow;
     }
 
-    public void setForceStackOverflow(boolean isForced) {
+    public Crasher setForceStackOverflow(boolean isForced) {
         isForceStackOverflow = isForced;
+        return this;
     }
 
     public boolean isForceStackOverflow() {
         return isForceStackOverflow;
     }
 
-    public void setCrashActivityEnabled(boolean isEnabled) {
+    public Crasher setCrashActivityEnabled(boolean isEnabled) {
         isCrashActivity = isEnabled;
+        return this;
     }
 
     public boolean isCrashActivityEnabled() {
         return isCrashActivity;
     }
 
-    public void setEmail(String email) {
+    public Crasher setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     @Nullable
@@ -73,8 +79,9 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
         return email;
     }
 
-    public void setColor(@ColorInt int color) {
+    public Crasher setColor(@ColorInt int color) {
         this.color = color;
+        return this;
     }
 
     @ColorInt

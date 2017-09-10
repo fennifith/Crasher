@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import james.buttons.Button;
+import james.crasher.BuildConfig;
 import james.crasher.R;
 import james.crasher.utils.ColorUtils;
 import james.crasher.utils.ImageUtils;
@@ -101,6 +102,8 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
 
         stackTrace.setText(getIntent().getStringExtra(EXTRA_STACK_TRACE));
         stackTraceHeader.setOnClickListener(this);
+        if (BuildConfig.DEBUG)
+            stackTraceHeader.callOnClick();
     }
 
     @Override
