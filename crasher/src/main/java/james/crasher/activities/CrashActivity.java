@@ -50,16 +50,16 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crash);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        name = (TextView) findViewById(R.id.name);
-        message = (TextView) findViewById(R.id.message);
-        description = (TextView) findViewById(R.id.description);
-        copy = (Button) findViewById(R.id.copy);
-        share = (Button) findViewById(R.id.share);
-        email = (Button) findViewById(R.id.email);
+        toolbar = findViewById(R.id.toolbar);
+        name = findViewById(R.id.name);
+        message = findViewById(R.id.message);
+        description = findViewById(R.id.description);
+        copy = findViewById(R.id.copy);
+        share = findViewById(R.id.share);
+        email = findViewById(R.id.email);
         stackTraceHeader = findViewById(R.id.stackTraceHeader);
-        stackTraceArrow = (ImageView) findViewById(R.id.stackTraceArrow);
-        stackTrace = (TextView) findViewById(R.id.stackTrace);
+        stackTraceArrow = findViewById(R.id.stackTraceArrow);
+        stackTrace = findViewById(R.id.stackTrace);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
