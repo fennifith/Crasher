@@ -8,7 +8,7 @@ ext {
     libraryName = 'Crasher'
     artifact = 'crasher'
 
-    libraryDescription = 'An easy to use crash reporting library for Android.'
+    libraryDescription = 'A simple crash reporting library for Android.'
 
     siteUrl = 'https://github.com/TheAndroidMaster/Crasher'
     gitUrl = 'https://github.com/TheAndroidMaster/Crasher.git'
