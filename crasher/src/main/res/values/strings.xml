@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Crasher</string>
+    <string name="title_crash_notifications">Error Messages</string>
     <string name="title_crashed">%1$s Crashed</string>
     <string name="title_email">%1$s in %2$s</string>
 
