@@ -20,6 +20,8 @@ compile 'me.jfenn:crasher:0.0.1'
 
 Creating a `new Crasher(context)` will automatically set Crasher as the default exception handler in the current thread. This will need to be done in every thread that your application uses, or every thread that you want Crasher to intercept exceptions from.
 
+**Note: doing this will prevent the Play Store's crash reporting from working, as Crasher will intercept all exceptions and the "this application has stopped working!" dialog will not be shown as a result.**
+
 It is recommended to store one instance of `Crasher` in your app's [`Application`](https://developer.android.com/reference/android/app/Application.html) class, and simply pass that to `Thread.setDefaultUncaughtExceptionHandler(crasher)` in each new thread that you create. If you do not engage in the fine art of multithreading, then you do not need to worry about this, and only need to create one `Crasher`, either in the `onCreate` method of your `Application` class, or the `onCreate` of the first `Activity` that is opened by your app.
 
 ### Options
