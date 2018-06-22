@@ -13,7 +13,7 @@
 The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your build.gradle file.
 
 ```gradle
-compile 'me.jfenn:crasher:0.0.1'
+compile 'me.jfenn:crasher:0.0.2'
 ```
 
 ### Setting the Exception Handler
@@ -21,6 +21,7 @@ compile 'me.jfenn:crasher:0.0.1'
 Creating a `new Crasher(context)` will automatically set Crasher as the default exception handler in the current thread. This will need to be done in every thread that your application uses, or every thread that you want Crasher to intercept exceptions from.
 
 **Note: doing this will prevent the Play Store's crash reporting from working, as Crasher will intercept all exceptions and the "this application has stopped working!" dialog will not be shown as a result.**
+You can use the method `CrashUtils.isInstalledFromPlayStore(context)` (or simply `BuildConfig.DEBUG` to check if it's a debug build) to prevent this. 
 
 It is recommended to store one instance of `Crasher` in your app's [`Application`](https://developer.android.com/reference/android/app/Application.html) class, and simply pass that to `Thread.setDefaultUncaughtExceptionHandler(crasher)` in each new thread that you create. If you do not engage in the fine art of multithreading, then you do not need to worry about this, and only need to create one `Crasher`, either in the `onCreate` method of your `Application` class, or the `onCreate` of the first `Activity` that is opened by your app.
 
@@ -47,11 +48,11 @@ You can override any string resource the app uses by specifying it in your own s
 |Resource Name|Value|Used For|
 |-----|-----|-----|
 |app_name|Crasher|The app's name in the action bar title/other random strings|
-|title_crashed|%1$s Crashed|The action bar title, with String.format|
-|title_email|%1$s in %2$s|I honestly can\'t remember, I'll update this later when I figure it out|
-|msg_crashed|Unfortunately, %1$s has stopped working. You can report this as a bug using the buttons below, or you can try to fix it yourself. When reporting the bug, please include as much detail as possible to help fix the issue as quickly as possible. Please note that your device info, such as the manufacturer and model number, may be included in the bug report.|The message displayed to the user when a crash occurs|
-|action_copy|Copy|Text of the button to copy the stack trace to the clipboard|
-|action_share|Share|Text of the button to bring up the share menu with the stack trace|
-|action_email|Email|Text of the button to share the stack trace and device info through an email|
-|action_send_email|Send Email|The title of the share menu that will appear if the user has more than one email app to choose from|
-|title_stack_trace|Stack Trace|The title of the button to show/hide the stack trace|
+|title_crasher_crashed|%1$s Crashed|The action bar title, with String.format|
+|title_crasher_exception|%1$s in %2$s|Used for the email subject, like "NullPointerException in My App"|
+|msg_crasher_crashed|Unfortunately, %1$s has stopped working. You can report this as a bug using the buttons below, or you can try to fix it yourself. When reporting the bug, please include as much detail as possible to help fix the issue as quickly as possible. Please note that your device info, such as the manufacturer and model number, may be included in the bug report.|The message displayed to the user when a crash occurs|
+|title_crasher_copy|Copy|Text of the button to copy the stack trace to the clipboard|
+|title_crasher_share|Share|Text of the button to bring up the share menu with the stack trace|
+|title_crasher_email|Email|Text of the button to share the stack trace and device info through an email|
+|title_crasher_send_email|Send Email|The title of the share menu that will appear if the user has more than one email app to choose from|
+|title_crasher_stack_trace|Stack Trace|The title of the button to show/hide the stack trace|
