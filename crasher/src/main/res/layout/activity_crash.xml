@@ -63,7 +63,7 @@
                 android:layout_marginRight="16dp"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:text="@string/msg_crashed"
+                android:text="@string/msg_crasher_crashed"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp" />
 
@@ -79,7 +79,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/action_copy"
+                    android:text="@string/title_crasher_copy"
                     app:backgroundType="outline"
                     app:ripplesEnabled="false" />
 
@@ -88,7 +88,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/action_share"
+                    android:text="@string/title_crasher_share"
                     app:backgroundType="outline"
                     app:ripplesEnabled="false" />
 
@@ -97,7 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/action_email"
+                    android:text="@string/title_crasher_email"
                     app:backgroundType="outline"
                     app:ripplesEnabled="false" />
 
@@ -131,7 +131,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="@string/title_stack_trace"
+                    android:text="@string/title_crasher_stack_trace"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="16sp" />
 
@@ -140,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_arrow_down" />
+                    app:srcCompat="@drawable/ic_crasher_arrow_down" />
 
             </LinearLayout>
 

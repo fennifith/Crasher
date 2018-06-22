@@ -155,13 +155,13 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
                     NotificationCompat.Builder builder;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        manager.createNotificationChannel(new NotificationChannel("crashNotifications", context.getString(R.string.title_crash_notifications), NotificationManager.IMPORTANCE_DEFAULT));
+                        manager.createNotificationChannel(new NotificationChannel("crashNotifications", context.getString(R.string.title_crasher_crash_notifications), NotificationManager.IMPORTANCE_DEFAULT));
                         builder = new NotificationCompat.Builder(context, "crashNotifications");
                     } else builder = new NotificationCompat.Builder(context);
 
-                    manager.notify(0, builder.setContentTitle(String.format(context.getString(R.string.title_crash_notification), context.getString(R.string.app_name), e.getClass().getName(), CrashUtils.getCause(context, stack)))
-                            .setContentText(context.getString(R.string.msg_crash_notification))
-                            .setSmallIcon(R.drawable.ic_bug)
+                    manager.notify(0, builder.setContentTitle(String.format(context.getString(R.string.title_crasher_crash_notification), context.getString(R.string.app_name), e.getClass().getName(), CrashUtils.getCause(context, stack)))
+                            .setContentText(context.getString(R.string.msg_crasher_crash_notification))
+                            .setSmallIcon(R.drawable.ic_crasher_bug)
                             .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0))
                             .setAutoCancel(true)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)

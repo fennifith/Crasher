@@ -91,8 +91,8 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(String.format(Locale.getDefault(), getString(R.string.title_crashed), getString(R.string.app_name)));
-            actionBar.setHomeAsUpIndicator(ImageUtils.getVectorDrawable(this, R.drawable.ic_back, isColorDark ? Color.WHITE : Color.BLACK));
+            actionBar.setTitle(String.format(Locale.getDefault(), getString(R.string.title_crasher_crashed), getString(R.string.app_name)));
+            actionBar.setHomeAsUpIndicator(ImageUtils.getVectorDrawable(this, R.drawable.ic_crasher_back, isColorDark ? Color.WHITE : Color.BLACK));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -111,7 +111,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             message.setText(messageString);
         else message.setVisibility(View.GONE);
 
-        description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crashed), getString(R.string.app_name)));
+        description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crasher_crashed), getString(R.string.app_name)));
 
         stackTrace.setText(stack);
         stackTraceHeader.setOnClickListener(this);
@@ -147,16 +147,16 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, body);
 
-            startActivity(Intent.createChooser(intent, getString(R.string.action_share)));
+            startActivity(Intent.createChooser(intent, getString(R.string.title_crasher_share)));
         } else if (v.getId() == R.id.email) {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setType("text/plain");
             intent.setData(Uri.parse("mailto:" + getIntent().getStringExtra(EXTRA_EMAIL)));
             intent.putExtra(Intent.EXTRA_EMAIL, getIntent().getStringExtra(EXTRA_EMAIL));
-            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_email), name.getText().toString(), getString(R.string.app_name)));
+            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_crasher_email), name.getText().toString(), getString(R.string.app_name)));
             intent.putExtra(Intent.EXTRA_TEXT, body);
 
-            startActivity(Intent.createChooser(intent, getString(R.string.action_send_email)));
+            startActivity(Intent.createChooser(intent, getString(R.string.title_crasher_send_email)));
         } else if (v.getId() == R.id.stackTraceHeader) {
             if (stackTrace.getVisibility() == View.GONE) {
                 stackTrace.setVisibility(View.VISIBLE);

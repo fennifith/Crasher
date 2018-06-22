@@ -2,18 +2,18 @@
 <resources>
 
     <string name="app_name">Crasher</string>
-    <string name="title_crashed">%1$s Crashed</string>
-    <string name="title_email">%1$s in %2$s</string>
-    <string name="title_crash_notification">%1$s crashed: %2$s at %3$s</string>
-    <string name="title_crash_notifications">Error Messages</string>
+    <string name="title_crasher_crashed">%1$s Crashed</string>
+    <string name="title_crasher_email">%1$s in %2$s</string>
+    <string name="title_crasher_crash_notification">%1$s crashed: %2$s at %3$s</string>
+    <string name="title_crasher_crash_notifications">Error Messages</string>
 
-    <string name="msg_crashed">Unfortunately, %1$s has stopped working. You can report this as a bug using the buttons below, or you can try to fix it yourself. When reporting the bug, please include as much detail as possible to help fix the issue as quickly as possible. Please note that your device info, such as the manufacturer and model number, may be included in the bug report.</string>
-    <string name="msg_crash_notification">Click to file a bug report.</string>
+    <string name="msg_crasher_crashed">Unfortunately, %1$s has stopped working. You can report this as a bug using the buttons below, or you can try to fix it yourself. When reporting the bug, please include as much detail as possible to help fix the issue as quickly as possible. Please note that your device info, such as the manufacturer and model number, may be included in the bug report.</string>
+    <string name="msg_crasher_crash_notification">Click to file a bug report.</string>
 
-    <string name="action_copy">Copy</string>
-    <string name="action_share">Share</string>
-    <string name="action_email">Email</string>
-    <string name="action_send_email">Send Email</string>
-    <string name="title_stack_trace">Stack Trace</string>
+    <string name="title_crasher_copy">Copy</string>
+    <string name="title_crasher_share">Share</string>
+    <string name="title_crasher_email">Email</string>
+    <string name="title_crasher_send_email">Send Email</string>
+    <string name="title_crasher_stack_trace">Stack Trace</string>
 
 </resources>
