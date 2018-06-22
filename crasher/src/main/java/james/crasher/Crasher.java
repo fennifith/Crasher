@@ -24,6 +24,7 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
     private boolean isCrashActivity = true;
 
     private String email;
+    private String debugMessage;
     private Integer color;
 
     public Crasher(Context context) {
@@ -79,6 +80,16 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
         return email;
     }
 
+    public Crasher setDebugMessage(String debugMessage) {
+        this.debugMessage = debugMessage;
+        return this;
+    }
+
+    @Nullable
+    public String getDebugMessage() {
+        return debugMessage;
+    }
+
     public Crasher setColor(@ColorInt int color) {
         this.color = color;
         return this;
@@ -111,6 +122,9 @@ public class Crasher implements Thread.UncaughtExceptionHandler {
 
             if (email != null)
                 intent.putExtra(CrashActivity.EXTRA_EMAIL, email);
+
+            if (debugMessage != null)
+                intent.putExtra(CrashActivity.EXTRA_DEBUG_MESSAGE, debugMessage);
 
             if (color != null)
                 intent.putExtra(CrashActivity.EXTRA_COLOR, color);

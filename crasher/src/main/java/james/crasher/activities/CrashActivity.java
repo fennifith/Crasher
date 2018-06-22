@@ -31,6 +31,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
     public static final String EXTRA_STACK_TRACE = "james.crasher.EXTRA_STACK_TRACE";
 
     public static final String EXTRA_EMAIL = "james.crasher.EXTRA_EMAIL";
+    public static final String EXTRA_DEBUG_MESSAGE = "james.crasher.EXTRA_DEBUG_MESSAGE";
     public static final String EXTRA_COLOR = "james.crasher.EXTRA_COLOR";
 
     private Toolbar toolbar;
@@ -45,21 +46,23 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
     private ImageView stackTraceArrow;
     private TextView stackTrace;
 
+    private String body;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crash);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        name = (TextView) findViewById(R.id.name);
-        message = (TextView) findViewById(R.id.message);
-        description = (TextView) findViewById(R.id.description);
-        copy = (Button) findViewById(R.id.copy);
-        share = (Button) findViewById(R.id.share);
-        email = (Button) findViewById(R.id.email);
+        toolbar = findViewById(R.id.toolbar);
+        name = findViewById(R.id.name);
+        message = findViewById(R.id.message);
+        description = findViewById(R.id.description);
+        copy = findViewById(R.id.copy);
+        share = findViewById(R.id.share);
+        email = findViewById(R.id.email);
         stackTraceHeader = findViewById(R.id.stackTraceHeader);
-        stackTraceArrow = (ImageView) findViewById(R.id.stackTraceArrow);
-        stackTrace = (TextView) findViewById(R.id.stackTrace);
+        stackTraceArrow = findViewById(R.id.stackTraceArrow);
+        stackTrace = findViewById(R.id.stackTrace);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -96,14 +99,27 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             getWindow().setNavigationBarColor(colorDark);
         }
 
-        name.setText(getIntent().getStringExtra(EXTRA_NAME));
-        message.setText(getIntent().getStringExtra(EXTRA_MESSAGE));
+        String nameString = getIntent().getStringExtra(EXTRA_NAME);
+        String messageString = getIntent().getStringExtra(EXTRA_NAME);
+
+        name.setText(nameString);
+        if (messageString != null && messageString.length() > 0)
+            message.setText(messageString);
+        else message.setVisibility(View.GONE);
+
         description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crashed), getString(R.string.app_name)));
 
-        stackTrace.setText(getIntent().getStringExtra(EXTRA_STACK_TRACE));
+        String stack = getIntent().getStringExtra(EXTRA_STACK_TRACE);
+        stackTrace.setText(stack);
         stackTraceHeader.setOnClickListener(this);
         if (BuildConfig.DEBUG)
             stackTraceHeader.callOnClick();
+
+        body = nameString + "\n" + (messageString != null ? messageString : "") + "\n\n" + stack
+                + "\n\nAndroid Version: " + Build.VERSION.SDK_INT
+                + "\nDevice Manufacturer: " + Build.MANUFACTURER
+                + "\nDevice Model: " + Build.MODEL
+                + "\n\n" + (getIntent().hasExtra(EXTRA_DEBUG_MESSAGE) ? getIntent().getStringExtra(EXTRA_DEBUG_MESSAGE) : "");
     }
 
     @Override
@@ -126,7 +142,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == R.id.share) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
+            intent.putExtra(Intent.EXTRA_TEXT, body);
 
             startActivity(Intent.createChooser(intent, getString(R.string.action_share)));
         } else if (v.getId() == R.id.email) {
@@ -135,7 +151,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             intent.setData(Uri.parse("mailto:" + getIntent().getStringExtra(EXTRA_EMAIL)));
             intent.putExtra(Intent.EXTRA_EMAIL, getIntent().getStringExtra(EXTRA_EMAIL));
             intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_email), name.getText().toString(), getString(R.string.app_name)));
-            intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
+            intent.putExtra(Intent.EXTRA_TEXT, body);
 
             startActivity(Intent.createChooser(intent, getString(R.string.action_send_email)));
         } else if (v.getId() == R.id.stackTraceHeader) {
