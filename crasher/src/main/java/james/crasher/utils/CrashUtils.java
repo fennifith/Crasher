@@ -12,4 +12,17 @@ public class CrashUtils {
                 .contains(context.getPackageManager().getInstallerPackageName(context.getPackageName()));
     }
 
+    public static String getCause(Context context, String stackTrace) {
+        int index = stackTrace.indexOf("at " + context.getPackageName());
+        if (index >= 0) {
+            stackTrace = stackTrace.substring(index);
+            index = stackTrace.indexOf("(");
+
+            if (index > 0)
+                return stackTrace.substring(index + 1, index + stackTrace.substring(index).indexOf(")"));
+        }
+
+        return null;
+    }
+
 }

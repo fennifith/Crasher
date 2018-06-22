@@ -22,6 +22,7 @@ import james.buttons.Button;
 import james.crasher.BuildConfig;
 import james.crasher.R;
 import james.crasher.utils.ColorUtils;
+import james.crasher.utils.CrashUtils;
 import james.crasher.utils.ImageUtils;
 
 public class CrashActivity extends AppCompatActivity implements View.OnClickListener {
@@ -99,7 +100,10 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             getWindow().setNavigationBarColor(colorDark);
         }
 
-        String nameString = getIntent().getStringExtra(EXTRA_NAME);
+        String stack = getIntent().getStringExtra(EXTRA_STACK_TRACE);
+        String stackCause = CrashUtils.getCause(this, stack);
+
+        String nameString = getIntent().getStringExtra(EXTRA_NAME) + (stackCause != null ? " at " + stackCause : "");
         String messageString = getIntent().getStringExtra(EXTRA_NAME);
 
         name.setText(nameString);
@@ -109,7 +113,6 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
 
         description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crashed), getString(R.string.app_name)));
 
-        String stack = getIntent().getStringExtra(EXTRA_STACK_TRACE);
         stackTrace.setText(stack);
         stackTraceHeader.setOnClickListener(this);
         if (BuildConfig.DEBUG)
