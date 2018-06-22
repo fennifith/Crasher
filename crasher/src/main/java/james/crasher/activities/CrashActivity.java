@@ -160,10 +160,10 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == R.id.stackTraceHeader) {
             if (stackTrace.getVisibility() == View.GONE) {
                 stackTrace.setVisibility(View.VISIBLE);
-                stackTraceArrow.animate().rotation(180).start();
+                stackTraceArrow.animate().scaleY(-1).start();
             } else {
                 stackTrace.setVisibility(View.GONE);
-                stackTraceArrow.animate().rotation(0).start();
+                stackTraceArrow.animate().scaleY(1).start();
             }
         }
     }
