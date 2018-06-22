@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity implements Crasher.OnCrashLi
                 .addListener(this)
                 .setEmail("18jafenn90@gmail.com");
 
-        stackOverflowSwitch = (SwitchCompat) findViewById(R.id.stackOverflow);
-        crashActivitySwitch = (SwitchCompat) findViewById(R.id.crashActivity);
-        backgroundSwitch = (SwitchCompat) findViewById(R.id.background);
-        colorButton = (AppCompatButton) findViewById(R.id.color);
+        stackOverflowSwitch = findViewById(R.id.stackOverflow);
+        crashActivitySwitch = findViewById(R.id.crashActivity);
+        backgroundSwitch = findViewById(R.id.background);
+        colorButton = findViewById(R.id.color);
 
         findViewById(R.id.nullPointer).setOnClickListener(new View.OnClickListener() {
             @Override

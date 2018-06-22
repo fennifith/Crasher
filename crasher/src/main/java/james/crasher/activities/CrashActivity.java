@@ -153,7 +153,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             intent.setType("text/plain");
             intent.setData(Uri.parse("mailto:" + getIntent().getStringExtra(EXTRA_EMAIL)));
             intent.putExtra(Intent.EXTRA_EMAIL, getIntent().getStringExtra(EXTRA_EMAIL));
-            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_crasher_email), name.getText().toString(), getString(R.string.app_name)));
+            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_crasher_exception), name.getText().toString(), getString(R.string.app_name)));
             intent.putExtra(Intent.EXTRA_TEXT, body);
 
             startActivity(Intent.createChooser(intent, getString(R.string.title_crasher_send_email)));
