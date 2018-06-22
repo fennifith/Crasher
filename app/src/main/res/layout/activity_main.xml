@@ -31,6 +31,13 @@
             android:padding="8dp"
             android:text="isCrashActivityEnabled" />
 
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="isBackground" />
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/color"
             android:layout_width="wrap_content"

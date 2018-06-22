@@ -22,6 +22,7 @@ import james.buttons.Button;
 import james.crasher.BuildConfig;
 import james.crasher.R;
 import james.crasher.utils.ColorUtils;
+import james.crasher.utils.CrashUtils;
 import james.crasher.utils.ImageUtils;
 
 public class CrashActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,6 +32,7 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
     public static final String EXTRA_STACK_TRACE = "james.crasher.EXTRA_STACK_TRACE";
 
     public static final String EXTRA_EMAIL = "james.crasher.EXTRA_EMAIL";
+    public static final String EXTRA_DEBUG_MESSAGE = "james.crasher.EXTRA_DEBUG_MESSAGE";
     public static final String EXTRA_COLOR = "james.crasher.EXTRA_COLOR";
 
     private Toolbar toolbar;
@@ -44,6 +46,8 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
     private View stackTraceHeader;
     private ImageView stackTraceArrow;
     private TextView stackTrace;
+
+    private String body;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +91,8 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(String.format(Locale.getDefault(), getString(R.string.title_crashed), getString(R.string.app_name)));
-            actionBar.setHomeAsUpIndicator(ImageUtils.getVectorDrawable(this, R.drawable.ic_back, isColorDark ? Color.WHITE : Color.BLACK));
+            actionBar.setTitle(String.format(Locale.getDefault(), getString(R.string.title_crasher_crashed), getString(R.string.app_name)));
+            actionBar.setHomeAsUpIndicator(ImageUtils.getVectorDrawable(this, R.drawable.ic_crasher_back, isColorDark ? Color.WHITE : Color.BLACK));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -96,14 +100,29 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
             getWindow().setNavigationBarColor(colorDark);
         }
 
-        name.setText(getIntent().getStringExtra(EXTRA_NAME));
-        message.setText(getIntent().getStringExtra(EXTRA_MESSAGE));
-        description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crashed), getString(R.string.app_name)));
+        String stack = getIntent().getStringExtra(EXTRA_STACK_TRACE);
+        String stackCause = CrashUtils.getCause(this, stack);
 
-        stackTrace.setText(getIntent().getStringExtra(EXTRA_STACK_TRACE));
+        String nameString = getIntent().getStringExtra(EXTRA_NAME) + (stackCause != null ? " at " + stackCause : "");
+        String messageString = getIntent().getStringExtra(EXTRA_NAME);
+
+        name.setText(nameString);
+        if (messageString != null && messageString.length() > 0)
+            message.setText(messageString);
+        else message.setVisibility(View.GONE);
+
+        description.setText(String.format(Locale.getDefault(), getString(R.string.msg_crasher_crashed), getString(R.string.app_name)));
+
+        stackTrace.setText(stack);
         stackTraceHeader.setOnClickListener(this);
         if (BuildConfig.DEBUG)
             stackTraceHeader.callOnClick();
+
+        body = nameString + "\n" + (messageString != null ? messageString : "") + "\n\n" + stack
+                + "\n\nAndroid Version: " + Build.VERSION.SDK_INT
+                + "\nDevice Manufacturer: " + Build.MANUFACTURER
+                + "\nDevice Model: " + Build.MODEL
+                + "\n\n" + (getIntent().hasExtra(EXTRA_DEBUG_MESSAGE) ? getIntent().getStringExtra(EXTRA_DEBUG_MESSAGE) : "");
     }
 
     @Override
@@ -126,25 +145,25 @@ public class CrashActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == R.id.share) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
+            intent.putExtra(Intent.EXTRA_TEXT, body);
 
-            startActivity(Intent.createChooser(intent, getString(R.string.action_share)));
+            startActivity(Intent.createChooser(intent, getString(R.string.title_crasher_share)));
         } else if (v.getId() == R.id.email) {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setType("text/plain");
             intent.setData(Uri.parse("mailto:" + getIntent().getStringExtra(EXTRA_EMAIL)));
             intent.putExtra(Intent.EXTRA_EMAIL, getIntent().getStringExtra(EXTRA_EMAIL));
-            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_email), name.getText().toString(), getString(R.string.app_name)));
-            intent.putExtra(Intent.EXTRA_TEXT, stackTrace.getText().toString()); //TODO: include device info, app name, build, version, etc
+            intent.putExtra(Intent.EXTRA_SUBJECT, String.format(Locale.getDefault(), getString(R.string.title_crasher_exception), name.getText().toString(), getString(R.string.app_name)));
+            intent.putExtra(Intent.EXTRA_TEXT, body);
 
-            startActivity(Intent.createChooser(intent, getString(R.string.action_send_email)));
+            startActivity(Intent.createChooser(intent, getString(R.string.title_crasher_send_email)));
         } else if (v.getId() == R.id.stackTraceHeader) {
             if (stackTrace.getVisibility() == View.GONE) {
                 stackTrace.setVisibility(View.VISIBLE);
-                stackTraceArrow.animate().rotation(180).start();
+                stackTraceArrow.animate().scaleY(-1).start();
             } else {
                 stackTrace.setVisibility(View.GONE);
-                stackTraceArrow.animate().rotation(0).start();
+                stackTraceArrow.animate().scaleY(1).start();
             }
         }
     }

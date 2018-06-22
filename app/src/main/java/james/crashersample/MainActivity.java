@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements Crasher.OnCrashLi
 
     private SwitchCompat stackOverflowSwitch;
     private SwitchCompat crashActivitySwitch;
+    private SwitchCompat backgroundSwitch;
     private AppCompatButton colorButton;
 
     private int color;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements Crasher.OnCrashLi
 
         stackOverflowSwitch = findViewById(R.id.stackOverflow);
         crashActivitySwitch = findViewById(R.id.crashActivity);
+        backgroundSwitch = findViewById(R.id.background);
         colorButton = findViewById(R.id.color);
 
         findViewById(R.id.nullPointer).setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements Crasher.OnCrashLi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 crasher.setCrashActivityEnabled(isChecked);
+            }
+        });
+
+        backgroundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                crasher.setBackgroundCrash(b);
             }
         });
 
