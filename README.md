@@ -4,7 +4,7 @@
 
 |Main Screen|Somewhat Unnecessary Proof of StackOverflow|
 |-----|-----|
-|![img](https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/screenshots/Crasher-Main.png)|![img](https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/screenshots/Crasher-StackOverflow.png)|
+|![img](./.github/images/main.png?raw=true)|![img](./.github/images/stackoverflow.png?raw=true)|
 
 ## Usage
 
